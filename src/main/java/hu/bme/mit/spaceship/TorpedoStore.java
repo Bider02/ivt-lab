@@ -1,6 +1,5 @@
 package hu.bme.mit.spaceship;
 
-import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -14,7 +13,7 @@ public class TorpedoStore {
   private double FAILURE_RATE = 0.0; //NOSONAR
 
   private int torpedoCount = 0;
-  private Random rand = SecureRandom.getInstanceStrong();  // SecureRandom is preferred to Random
+  private Random rand = new Random();  // SecureRandom is preferred to Random
 
 
   public TorpedoStore(int numberOfTorpedos){
