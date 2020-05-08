@@ -152,4 +152,23 @@ public class GT4500Test {
     verify(ts2, times(1)).fire(3);
     assertEquals(true, result);
   }
+
+  @Test
+  public void fireDouble(){
+    // Arrange
+    when(ts1.fire(anyInt())).thenReturn(true);
+    when(ts2.isEmpty()).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result2 = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    verify(ts1, times(2)).isEmpty();
+    verify(ts1, times(2)).fire(anyInt());
+    verify(ts2, times(1)).isEmpty();
+    verify(ts2, never()).fire(anyInt());
+    assertEquals(true, result);
+    assertEquals(true, result2);
+  }
 }
