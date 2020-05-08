@@ -137,4 +137,19 @@ public class GT4500Test {
     verify(ts2, times(1)).fire(anyInt());
     assertEquals(true, result);
   }
+
+  @Test
+  public void fireAllOneandThree(){
+    // Arrange
+    when(ts1.fire(anyInt())).thenReturn(true);
+    when(ts2.fire(anyInt())).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    verify(ts1, times(1)).fire(1);
+    verify(ts2, times(1)).fire(3);
+    assertEquals(true, result);
+  }
 }
