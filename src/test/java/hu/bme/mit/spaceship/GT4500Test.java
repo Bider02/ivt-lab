@@ -213,6 +213,21 @@ public class GT4500Test {
   }
 
   @Test
+  public void fireSingleEmpty(){
+    // Arrange
+    when(ts1.isEmpty()).thenReturn(true);
+    when(ts2.isEmpty()).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    verify(ts1, times(1)).isEmpty();
+    verify(ts2, times(1)).isEmpty();
+    assertEquals(false, result);
+  }
+
+  @Test
   public void fireAllEmpty(){
     // Arrange
     when(ts1.isEmpty()).thenReturn(false);
@@ -270,16 +285,4 @@ public class GT4500Test {
     verify(ts2, times(1)).fire(3);
     assertEquals(false, result);
   }
-
-
-  /*@Test
-  public void fireNull(){
-    // Arrange
-
-    // Act
-    boolean result = ship.fireTorpedo(null);
-
-    // Assert
-    assertEquals(false, result);
-  }*/
 }
