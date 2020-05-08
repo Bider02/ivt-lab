@@ -171,4 +171,115 @@ public class GT4500Test {
     assertEquals(true, result);
     assertEquals(true, result2);
   }
+
+
+ @Test
+  public void fireDoubleOnlyOne(){
+    // Arrange
+    when(ts2.isEmpty()).thenReturn(true);
+    when(ts1.fire(anyInt())).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+    when(ts1.isEmpty()).thenReturn(true);
+    boolean result2 = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    verify(ts1, times(2)).isEmpty();
+    verify(ts1, times(1)).fire(anyInt());
+    verify(ts2, times(1)).isEmpty();
+    verify(ts2, never()).fire(anyInt());
+    assertEquals(true, result);
+    assertEquals(false, result2);
+  }
+
+  @Test
+  public void fireDoubleSecondaryEmpty(){
+    // Arrange
+    when(ts2.isEmpty()).thenReturn(true);
+    when(ts1.fire(anyInt())).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result2 = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    verify(ts2, times(1)).isEmpty();
+    verify(ts2, never()).fire(anyInt());
+    verify(ts1, times(2)).isEmpty();
+    verify(ts1, times(2)).fire(anyInt());
+    assertEquals(true, result);
+    assertEquals(true, result2);
+  }
+
+  @Test
+  public void fireAllEmpty(){
+    // Arrange
+    when(ts1.isEmpty()).thenReturn(false);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    verify(ts1, times(1)).isEmpty();
+    assertEquals(false, result);
+  }
+
+  @Test
+  public void fireFirstEmpty(){
+    // Arrange
+    when(ts1.isEmpty()).thenReturn(true);
+    when(ts2.isEmpty()).thenReturn(false);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    verify(ts1, times(1)).isEmpty();
+    assertEquals(false, result);
+  }
+
+  @Test
+  public void fireAllSecondEmpty(){
+    // Arrange
+    when(ts1.isEmpty()).thenReturn(false);
+    when(ts2.isEmpty()).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    verify(ts1, times(1)).isEmpty();
+    verify(ts2, times(1)).isEmpty();
+    assertEquals(false, result);
+  }
+
+  @Test
+  public void fireAllFireOne(){
+    // Arrange
+    when(ts1.fire(1)).thenReturn(true);
+    when(ts2.fire(1)).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    verify(ts1, times(1)).isEmpty();
+    verify(ts2, times(1)).isEmpty();
+    verify(ts1, times(1)).fire(1);
+    verify(ts2, times(1)).fire(3);
+    assertEquals(false, result);
+  }
+
+
+  /*@Test
+  public void fireNull(){
+    // Arrange
+
+    // Act
+    boolean result = ship.fireTorpedo(null);
+
+    // Assert
+    assertEquals(false, result);
+  }*/
 }
